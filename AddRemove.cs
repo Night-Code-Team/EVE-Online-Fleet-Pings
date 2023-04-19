@@ -33,4 +33,14 @@ public static class AddRemove
             box.Text = "";
         }
     }
+    public static bool CheckURL(string ID)
+    {
+        using HttpResponseMessage response = MainWindow.Client.GetAsync(ID).Result;
+        if (response.IsSuccessStatusCode)
+            return true;
+        else
+        {
+            return false;
+        }
+    }
 }

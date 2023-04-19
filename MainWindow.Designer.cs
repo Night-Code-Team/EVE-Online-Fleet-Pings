@@ -287,6 +287,7 @@ partial class MainWindow
             this.Logo.Location = new System.Drawing.Point(20, 20);
             this.Logo.Name = "Logo";
             this.Logo.Size = new System.Drawing.Size(30, 30);
+            this.Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.Logo.TabIndex = 1;
             this.Logo.TabStop = false;
             this.Logo.Click += new System.EventHandler(this.Logo_Click);
@@ -358,6 +359,7 @@ partial class MainWindow
             this.Controls.Add(this.WebhookURL);
             this.Controls.Add(this.Panel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Fleet Pings";
@@ -394,7 +396,7 @@ partial class MainWindow
     private Label FC;
     private TextBox FleetNameBox;
     private DateTimePicker Date;
-    private TextBox DoctrineBox;
+    public TextBox DoctrineBox;
     private TextBox LocationBox;
     private TextBox URL;
     private PictureBox ColorPicker;

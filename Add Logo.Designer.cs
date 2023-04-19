@@ -54,7 +54,7 @@ partial class AddLogo
             this.Submit.TabIndex = 3;
             this.Submit.Text = "Submit";
             this.Submit.UseVisualStyleBackColor = true;
-            this.Submit.Click += new System.EventHandler(this.Submit_Click);
+            this.Submit.Click += new System.EventHandler(this.Submit_ClickAsync);
             // 
             // LogoURLBox
             // 
@@ -64,6 +64,8 @@ partial class AddLogo
             this.LogoURLBox.Size = new System.Drawing.Size(297, 27);
             this.LogoURLBox.TabIndex = 1;
             this.LogoURLBox.Text = "Enter Logo URL Here";
+            this.LogoURLBox.GotFocus += new System.EventHandler(this.RemoveTextFromLogoURLBox);
+            this.LogoURLBox.LostFocus += new System.EventHandler(this.AddTextToLogoURLBox);
             // 
             // LogoNameBox
             // 
@@ -73,6 +75,8 @@ partial class AddLogo
             this.LogoNameBox.Size = new System.Drawing.Size(297, 27);
             this.LogoNameBox.TabIndex = 0;
             this.LogoNameBox.Text = "Enter Logo Name Here";
+            this.LogoNameBox.GotFocus += new System.EventHandler(this.RemoveTextFromLogoNameBox);
+            this.LogoNameBox.LostFocus += new System.EventHandler(this.AddTextToLogoNameBox);
             // 
             // LogoURL
             // 
@@ -104,6 +108,7 @@ partial class AddLogo
             this.Controls.Add(this.LogoURL);
             this.Controls.Add(this.LogoName);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "AddLogo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Logo";

@@ -5,8 +5,10 @@ public partial class MainWindow : Form
     public static HttpClient Client { get; set; } = new HttpClient();
     public static Dictionary<string, string> FCS { get; set; } = new();
     public static Dictionary<string, string> Ships { get; set; } = new();
+    public static Dictionary<string, string> Logos { get; set; } = new();
     public static string FCID { get; set; } = "";
     public static string ShipID { get; set; } = "";
+    public static string LogoURL { get; set; } = "";
     public MainWindow()
     {
         InitializeComponent();
@@ -96,6 +98,11 @@ public partial class MainWindow : Form
         foreach (string ship in list)
         {
             MainWindow.Ships.Add(ship.Remove(0, ship.IndexOf(",") + 1), ship.Remove(ship.IndexOf(",")));
+        }
+        list = File.ReadAllLines("Cache/Logo List.csv");
+        foreach (string logo in list)
+        {
+            MainWindow.Logos.Add(logo.Remove(logo.IndexOf(",")), logo.Remove(0, logo.IndexOf(",")) + 1);
         }
     }
 

@@ -2,6 +2,7 @@
 {
     partial class LogoSelection
     {
+        public static LogoSelection LS { get; set; }
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -71,16 +72,19 @@
             // 
             this.LogosList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.LogosList.Location = new System.Drawing.Point(16, 12);
+            this.LogosList.MultiSelect = false;
             this.LogosList.Name = "LogosList";
             this.LogosList.Size = new System.Drawing.Size(772, 370);
+            this.LogosList.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.LogosList.TabIndex = 2;
             this.LogosList.UseCompatibleStateImageBehavior = false;
             // 
             // Logos
             // 
-            this.Logos.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.Logos.ImageSize = new System.Drawing.Size(16, 16);
+            this.Logos.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.Logos.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("Logos.ImageStream")));
             this.Logos.TransparentColor = System.Drawing.Color.Transparent;
+            this.Logos.Images.SetKeyName(0, "");
             // 
             // LogoSelection
             // 
@@ -92,9 +96,11 @@
             this.Controls.Add(this.AddNewLogo);
             this.Controls.Add(this.Cancel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "LogoSelection";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Logo Selection";
+            this.Load += new System.EventHandler(this.LogoSelection_Load);
             this.ResumeLayout(false);
 
         }
@@ -103,7 +109,7 @@
         private Button Cancel;
         private Button AddNewLogo;
         private Button Submit;
-        private ListView LogosList;
-        private ImageList Logos;
+        public ListView LogosList;
+        public ImageList Logos;
     }
 }

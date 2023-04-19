@@ -85,7 +85,7 @@ partial class AddFCWindow
             this.Submit.TabIndex = 3;
             this.Submit.Text = "Submit";
             this.Submit.UseVisualStyleBackColor = true;
-            this.Submit.Click += new System.EventHandler(this.Submit_Click);
+            this.Submit.Click += new System.EventHandler(this.Submit_ClickAsync);
             // 
             // Cancel
             // 
@@ -109,6 +109,7 @@ partial class AddFCWindow
             this.Controls.Add(this.FCID);
             this.Controls.Add(this.FCName);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "AddFCWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add FC";

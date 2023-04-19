@@ -27,11 +27,11 @@ public partial class AddFCWindow : Form
         Close();
     }
 
-    async private void Submit_Click(object sender, EventArgs e)
+    async private void Submit_ClickAsync(object sender, EventArgs e)
     {
         if (FCNameBox.Text != "Enter FC Name Here" && !string.IsNullOrWhiteSpace(FCNameBox.Text)
             && FCIDBox.Text != "Enter FC ID Here" && !string.IsNullOrWhiteSpace(FCIDBox.Text))
-            if (CheckURL(FCIDBox.Text))
+            if (AddRemove.CheckURL($"https://kb.evetools.org/character/{FCIDBox.Text}/"))
             {
                 try
                 {
@@ -60,16 +60,5 @@ public partial class AddFCWindow : Form
                 MessageBox.Show("Character does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
         else
             MessageBox.Show("Enter FC Name and ID", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-
-    }
-    private static bool CheckURL(string ID)
-    {
-        using HttpResponseMessage response = MainWindow.Client.GetAsync($"https://kb.evetools.org/character/{ID}/").Result;
-        if (response.IsSuccessStatusCode)
-            return true;
-        else
-        {
-            return false;
-        }
     }
 }
