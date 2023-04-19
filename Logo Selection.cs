@@ -24,7 +24,6 @@ public partial class LogoSelection : Form
         {
             MainWindow.MW.Logo.Image = Image.FromFile($"Cache/Logo Photos/{LogosList.SelectedItems[0].Text}.png");
             MainWindow.LogoURL = MainWindow.Logos[LogosList.SelectedItems[0].Text];
-            MainWindow.MW.DoctrineBox.Text = MainWindow.LogoURL;
         }
         catch { }
         Close();

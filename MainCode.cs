@@ -1,5 +1,5 @@
 namespace EVE_Online_Fleet_Pings;
-internal static class Program
+internal static class MainCode
 {
     /// <summary>
     ///  The main entry point for the application.

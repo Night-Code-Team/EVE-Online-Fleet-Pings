@@ -1,4 +1,6 @@
-using System.Reflection.Emit;
+using System.Net;
+using Newtonsoft.Json;
+
 namespace EVE_Online_Fleet_Pings;
 public partial class MainWindow : Form
 {
@@ -102,7 +104,7 @@ public partial class MainWindow : Form
         list = File.ReadAllLines("Cache/Logo List.csv");
         foreach (string logo in list)
         {
-            MainWindow.Logos.Add(logo.Remove(logo.IndexOf(",")), logo.Remove(0, logo.IndexOf(",")) + 1);
+            MainWindow.Logos.Add(logo.Remove(logo.IndexOf(",")), logo.Remove(0, logo.IndexOf(",") + 1));
         }
     }
 
@@ -110,6 +112,63 @@ public partial class MainWindow : Form
     {
         FCIcon.Image = new Bitmap($"Cache/FC Photos/{FCName.SelectedItem}.png");
         Footer.Text = "Fleet by " + FCName.SelectedItem.ToString();
-        FCID = FCS[$"{FCName.SelectedItem.ToString()}"];
+        FCID = FCS[$"{FCName.SelectedItem}"];
+    }
+
+    private void Send_Click(object sender, EventArgs e)
+    {
+        SendMessage(URL.Text, FormString());
+    }
+    private static void SendMessage(string uri, string message)
+    {
+        Connection.Post(uri, message);
+    }
+    private string FormString()
+    {
+        DateTime dt = DateTime.UtcNow;
+        string month = dt.Month.ToString();
+        if (month.Length < 2)
+        {
+            month = "0" + month;
+        }
+        string day = dt.Day.ToString();
+        if (day.Length < 2)
+        {
+            day = "0" + day;
+        }
+        string time = $"{dt.Year}-{month}-{day}T{dt.TimeOfDay}Z";
+        DateTime ft = new(Date.Value.Year, Date.Value.Month, Date.Value.Day, Time.Value.Hour, Time.Value.Minute, Time.Value.Second);
+        long unix = ((DateTimeOffset)ft).ToUnixTimeSeconds();
+        string color = ((Border.BackColor.R * 65536) + (Border.BackColor.G * 256) + Border.BackColor.B).ToString();
+        string json = JsonConvert.SerializeObject(new
+        {
+            content = "@everyone",
+            embeds = new[]
+                {
+                    new
+                    {
+                        title = $"{Header.Text}",
+                        description = $"{Description.Text}\n\n**ФК**: {FCName.SelectedItem}\n**Название флота**: {FleetNameBox.Text}\n**Место сбора**: {LocationBox.Text}\n**Время сбора**: <t:{unix}:F>\n**Доктрина**: {DoctrineBox.Text}",
+                        color = $"{color}",
+                        author = new
+                        {
+                            name = $"{AuthorHeader.Text}",
+                            icon_url = $"{LogoURL}"
+                        },
+                        footer = new
+                        {
+                            text = $"{Footer.Text}",
+                            icon_url = $"https://images.evetech.net/characters/{FCID}/portrait?size=128"
+                        },
+                        timestamp = $"{time}",
+                        thumbnail = new
+                        {
+                            url = $"https://images.evetech.net/types/{ShipID}/render?size=128"
+                        }
+                    }
+                }
+        });
+        File.WriteAllText("Сообщение.txt", json);
+        return json;
     }
 }

@@ -98,7 +98,7 @@ partial class MainWindow
             this.FCName.Location = new System.Drawing.Point(70, 167);
             this.FCName.Name = "FCName";
             this.FCName.Size = new System.Drawing.Size(302, 28);
-            this.FCName.TabIndex = 14;
+            this.FCName.TabIndex = 54;
             this.FCName.SelectedIndexChanged += new System.EventHandler(this.FCName_SelectedIndexChanged);
             // 
             // Time
@@ -305,7 +305,7 @@ partial class MainWindow
             // WebhookURL
             // 
             this.WebhookURL.AutoSize = true;
-            this.WebhookURL.Location = new System.Drawing.Point(66, 49);
+            this.WebhookURL.Location = new System.Drawing.Point(66, 44);
             this.WebhookURL.Name = "WebhookURL";
             this.WebhookURL.Size = new System.Drawing.Size(105, 20);
             this.WebhookURL.TabIndex = 1;
@@ -313,10 +313,12 @@ partial class MainWindow
             // 
             // URL
             // 
-            this.URL.Location = new System.Drawing.Point(174, 46);
+            this.URL.Location = new System.Drawing.Point(174, 41);
             this.URL.Name = "URL";
             this.URL.Size = new System.Drawing.Size(542, 27);
             this.URL.TabIndex = 0;
+            this.URL.Text = "https://discord.com/api/webhooks/1097328139245457479/HhXFEhsESW8G_xDLXjyTtGcM9Fnv" +
+    "KFsGpOzUDvU3OX7_QRbSrXA40-adCeljLwjSuq4V";
             // 
             // ColorPicker
             // 
@@ -336,6 +338,7 @@ partial class MainWindow
             this.Send.TabIndex = 11;
             this.Send.Text = "Send";
             this.Send.UseVisualStyleBackColor = true;
+            this.Send.Click += new System.EventHandler(this.Send_Click);
             // 
             // AddFC
             // 

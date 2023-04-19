@@ -49,7 +49,7 @@ public partial class AddFCWindow : Form
                 StreamWriter writer = new(file);
                 if (list != "")
                     writer.WriteLine();
-                writer.Write($"{FCNameBox.Text}, {FCIDBox.Text}");
+                writer.Write($"{FCNameBox.Text},{FCIDBox.Text}");
                 writer.Close();
                 file.Close();
                 MainWindow.MW.FCName.Items.Add(FCNameBox.Text);

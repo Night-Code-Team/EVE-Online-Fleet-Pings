@@ -48,7 +48,7 @@ public partial class AddLogo : Form
                 StreamWriter writer = new(file);
                 if (list != "")
                     writer.WriteLine();
-                writer.Write($"{LogoNameBox.Text}, {LogoURLBox.Text}");
+                writer.Write($"{LogoNameBox.Text},{LogoURLBox.Text}");
                 writer.Close();
                 file.Close();
                 LogoSelection.LS.Logos.Images.Add(LogoNameBox.Text, Image.FromFile($"Cache/Logo Photos/{LogoNameBox.Text}.png"));
