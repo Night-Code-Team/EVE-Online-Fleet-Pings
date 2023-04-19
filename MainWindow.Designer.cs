@@ -317,8 +317,6 @@ partial class MainWindow
             this.URL.Name = "URL";
             this.URL.Size = new System.Drawing.Size(542, 27);
             this.URL.TabIndex = 0;
-            this.URL.Text = "https://discord.com/api/webhooks/1097328139245457479/HhXFEhsESW8G_xDLXjyTtGcM9Fnv" +
-    "KFsGpOzUDvU3OX7_QRbSrXA40-adCeljLwjSuq4V";
             // 
             // ColorPicker
             // 

@@ -1,5 +1,4 @@
 using System.Text;
-using System.Net;
 
 namespace EVE_Online_Fleet_Pings;
 public static class Connection
