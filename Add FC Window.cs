@@ -35,26 +35,28 @@ public partial class AddFCWindow : Form
             {
                 try
                 {
-                    using var stream = await MainWindow.Client.GetStreamAsync($"https://images.evetech.net/characters/{FCIDBox.Text}/portrait?size=32");
+                    using Stream stream = await MainWindow.Client.GetStreamAsync($"https://images.evetech.net/characters/{FCIDBox.Text}/portrait?size=32");
                     using FileStream fileStream = new($@"Cache\FC Photos\{FCNameBox.Text}.png", FileMode.CreateNew);
+                    Submit.Enabled = false;
                     await stream.CopyToAsync(fileStream);
+                    fileStream.Close();
+                    stream.Close();
+                    string list = File.ReadAllText("Cache/FC List.csv");
+                    FileStream file = new("Cache/FC List.csv", FileMode.Append);
+                    StreamWriter writer = new(file);
+                    if (list != "")
+                        writer.WriteLine();
+                    writer.Write($"{FCNameBox.Text},{FCIDBox.Text}");
+                    writer.Close();
+                    file.Close();
+                    MainWindow.MW.FCName.Items.Add(FCNameBox.Text);
+                    MainWindow.FCS.Add(FCNameBox.Text, FCIDBox.Text);
+                    Close();
                 }
                 catch (IOException)
                 {
                     MessageBox.Show("Character already exists", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-
                 }
-                string list = File.ReadAllText("Cache/FC List.csv");
-                FileStream file = new("Cache/FC List.csv", FileMode.Append);
-                StreamWriter writer = new(file);
-                if (list != "")
-                    writer.WriteLine();
-                writer.Write($"{FCNameBox.Text},{FCIDBox.Text}");
-                writer.Close();
-                file.Close();
-                MainWindow.MW.FCName.Items.Add(FCNameBox.Text);
-                MainWindow.FCS.Add(FCNameBox.Text, FCIDBox.Text);
-                Close();
             }
             else
                 MessageBox.Show("Character does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);

@@ -26,7 +26,6 @@ public partial class AddLogo : Form
     {
         Close();
     }
-
     async private void Submit_ClickAsync(object sender, EventArgs e)
     {
         if (LogoNameBox.Text != "Enter Logo Name Here" && !string.IsNullOrWhiteSpace(LogoNameBox.Text)
@@ -35,9 +34,12 @@ public partial class AddLogo : Form
             {
                 try
                 {
-                    using var stream = await MainWindow.Client.GetStreamAsync(LogoURLBox.Text);
+                    using Stream stream = await MainWindow.Client.GetStreamAsync(LogoURLBox.Text);
                     using FileStream fileStream = new($@"Cache\Logo Photos\{LogoNameBox.Text}.png", FileMode.CreateNew);
+                    Submit.Enabled = false;
                     await stream.CopyToAsync(fileStream);
+                    fileStream.Close();
+                    stream.Close();
                 }
                 catch (IOException)
                 {

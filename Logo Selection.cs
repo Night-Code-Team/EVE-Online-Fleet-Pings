@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-namespace EVE_Online_Fleet_Pings;
+﻿namespace EVE_Online_Fleet_Pings;
 public partial class LogoSelection : Form
 {
     public LogoSelection()
@@ -22,7 +21,11 @@ public partial class LogoSelection : Form
     {
         try
         {
-            MainWindow.MW.Logo.Image = Image.FromFile($"Cache/Logo Photos/{LogosList.SelectedItems[0].Text}.png");
+            using (Image img = Logos.Images[$"{LogosList.SelectedItems[0].Text}.png"])
+            {
+                MainWindow.MW.Logo.Image = new Bitmap(img);
+                img.Dispose();
+            }
             MainWindow.LogoURL = MainWindow.Logos[LogosList.SelectedItems[0].Text];
         }
         catch { }

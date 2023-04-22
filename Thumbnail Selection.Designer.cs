@@ -392,7 +392,7 @@ partial class ThumbnailSelection
             this.Submit.Location = new System.Drawing.Point(583, 388);
             this.Submit.Name = "Submit";
             this.Submit.Size = new System.Drawing.Size(201, 34);
-            this.Submit.TabIndex = 1;
+            this.Submit.TabIndex = 2;
             this.Submit.Text = "Submit";
             this.Submit.UseVisualStyleBackColor = true;
             this.Submit.Click += new System.EventHandler(this.Submit_Click);
@@ -404,7 +404,7 @@ partial class ThumbnailSelection
             this.ThumbnailsList.Name = "ThumbnailsList";
             this.ThumbnailsList.Size = new System.Drawing.Size(772, 370);
             this.ThumbnailsList.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.ThumbnailsList.TabIndex = 2;
+            this.ThumbnailsList.TabIndex = 0;
             this.ThumbnailsList.UseCompatibleStateImageBehavior = false;
             // 
             // Picture

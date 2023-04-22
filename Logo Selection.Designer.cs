@@ -53,7 +53,7 @@
             this.AddNewLogo.Location = new System.Drawing.Point(300, 388);
             this.AddNewLogo.Name = "AddNewLogo";
             this.AddNewLogo.Size = new System.Drawing.Size(201, 34);
-            this.AddNewLogo.TabIndex = 1;
+            this.AddNewLogo.TabIndex = 2;
             this.AddNewLogo.Text = "Add New Logo";
             this.AddNewLogo.UseVisualStyleBackColor = true;
             this.AddNewLogo.Click += new System.EventHandler(this.AddNewLogo_Click);
@@ -63,7 +63,7 @@
             this.Submit.Location = new System.Drawing.Point(587, 388);
             this.Submit.Name = "Submit";
             this.Submit.Size = new System.Drawing.Size(201, 34);
-            this.Submit.TabIndex = 1;
+            this.Submit.TabIndex = 3;
             this.Submit.Text = "Submit";
             this.Submit.UseVisualStyleBackColor = true;
             this.Submit.Click += new System.EventHandler(this.Submit_Click);
@@ -76,15 +76,14 @@
             this.LogosList.Name = "LogosList";
             this.LogosList.Size = new System.Drawing.Size(772, 370);
             this.LogosList.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.LogosList.TabIndex = 2;
+            this.LogosList.TabIndex = 0;
             this.LogosList.UseCompatibleStateImageBehavior = false;
             // 
             // Logos
             // 
             this.Logos.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.Logos.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("Logos.ImageStream")));
+            this.Logos.ImageSize = new System.Drawing.Size(64, 64);
             this.Logos.TransparentColor = System.Drawing.Color.Transparent;
-            this.Logos.Images.SetKeyName(0, "");
             // 
             // LogoSelection
             // 

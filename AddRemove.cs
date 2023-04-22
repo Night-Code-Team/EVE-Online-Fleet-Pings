@@ -35,10 +35,17 @@ public static class AddRemove
     }
     public static bool CheckURL(string ID)
     {
-        using HttpResponseMessage response = MainWindow.Client.GetAsync(ID).Result;
-        if (response.IsSuccessStatusCode)
-            return true;
-        else
+        try
+        {
+            using HttpResponseMessage response = MainWindow.Client.GetAsync(ID).Result;
+            if (response.IsSuccessStatusCode)
+                return true;
+            else
+            {
+                return false;
+            }
+        }
+        catch
         {
             return false;
         }
