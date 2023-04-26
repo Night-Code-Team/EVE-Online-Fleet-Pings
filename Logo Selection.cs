@@ -23,7 +23,7 @@ public partial class LogoSelection : Form
         {
             using (Image img = Logos.Images[$"{LogosList.SelectedItems[0].Text}.png"])
             {
-                MainWindow.MW.Logo.Image = new Bitmap(img);
+                MainWindow.MW.AuthorIcon.Image = new Bitmap(img);
                 img.Dispose();
             }
             MainWindow.LogoURL = MainWindow.Logos[LogosList.SelectedItems[0].Text];
@@ -33,11 +33,11 @@ public partial class LogoSelection : Form
     }
     private void LogoSelection_Load(object sender, EventArgs e)
     {
-        string[] list = File.ReadAllLines("Cache/Logo List.csv");
+        string[] list = File.ReadAllLines("Cache/Logos List.csv");
         for (int i = 0; i < list.Length; i++)
         {
             string logo = list[i];
-            Logos.Images.Add(Image.FromFile($"Cache/Logo Photos/{logo.Remove(logo.IndexOf(","))}.png"));
+            Logos.Images.Add(Image.FromFile($"Cache/Logos Photos/{logo.Remove(logo.IndexOf(","))}.png"));
             Logos.Images.SetKeyName(i, $"{logo.Remove(logo.IndexOf(","))}.png");
         }
         LogosList.LargeImageList = Logos;

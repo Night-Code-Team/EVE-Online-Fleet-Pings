@@ -1,3 +1,4 @@
+using System.Data;
 using System.Diagnostics;
 using Newtonsoft.Json;
 
@@ -13,6 +14,7 @@ public partial class MainWindow : Form
     public static string ShipID { get; set; } = "";
     public static string LogoURL { get; set; } = "";
     public static string URLstr { get; set; } = "";
+    private string Content { get; set; } = "@everyone";
     public MainWindow()
     {
         InitializeComponent();
@@ -37,11 +39,11 @@ public partial class MainWindow : Form
     }
     private void RemoveTextFromHeader(object sender, EventArgs e)
     {
-        AddRemove.RemoveText(Header, "Enter Header Here", Color.White);
+        AddRemove.RemoveText(Title, "Enter Header Here", Color.White);
     }
     private void AddTextToHeader(object sender, EventArgs e)
     {
-        AddRemove.AddText(Header, "Enter Header Here");
+        AddRemove.AddText(Title, "Enter Header Here");
     }
     private void RemoveTextFromLocationBox(object sender, EventArgs e)
     {
@@ -61,11 +63,11 @@ public partial class MainWindow : Form
     }
     private void RemoveTextFromAuthorHeader(object sender, EventArgs e)
     {
-        AddRemove.RemoveText(AuthorHeader, "Enter Header Here", Color.White);
+        AddRemove.RemoveText(Author, "Enter Header Here", Color.White);
     }
     private void AddTextToAuthorHeader(object sender, EventArgs e)
     {
-        AddRemove.AddText(AuthorHeader, "Enter Header Here");
+        AddRemove.AddText(Author, "Enter Header Here");
     }
     #endregion
     private void ColorPicker_Click(object sender, EventArgs e)
@@ -101,15 +103,15 @@ public partial class MainWindow : Form
         string[] WebhookList = File.ReadAllLines("Cache/Webhooks List.csv");
         foreach (string Webhook in WebhookList)
         {
-            FCS.Add(Webhook.Remove(Webhook.IndexOf(",")), Webhook.Remove(0, Webhook.IndexOf(",") + 1));
-            FCName.Items.Add(Webhook.Remove(Webhook.IndexOf(",")));
+            URLs.Add(Webhook.Remove(Webhook.IndexOf(",")), Webhook.Remove(0, Webhook.IndexOf(",") + 1));
+            URL.Items.Add(Webhook.Remove(Webhook.IndexOf(",")));
         }
         string[] list = File.ReadAllLines("Cache/Ships List.csv");
         foreach (string ship in list)
         {
             MainWindow.Ships.Add(ship.Remove(0, ship.IndexOf(",") + 1), ship.Remove(ship.IndexOf(",")));
         }
-        list = File.ReadAllLines("Cache/Logo List.csv");
+        list = File.ReadAllLines("Cache/Logos List.csv");
         foreach (string logo in list)
         {
             MainWindow.Logos.Add(logo.Remove(logo.IndexOf(",")), logo.Remove(0, logo.IndexOf(",") + 1));
@@ -123,7 +125,7 @@ public partial class MainWindow : Form
             FCIcon.Image = new Bitmap(img);
             img.Dispose();
         }
-        Footer.Text = "Fleet by " + FCName.SelectedItem.ToString();
+        FooterText.Text = "Fleet by " + FCName.SelectedItem.ToString();
         FCID = FCS[$"{FCName.SelectedItem}"];
     }
     private void Send_Click(object sender, EventArgs e)
@@ -132,7 +134,9 @@ public partial class MainWindow : Form
         {
             try
             {
-                SendMessage(URLs[URLstr], FormString());
+                string json = FormJSON();
+                SendMessage(URLstr, json);
+                File.WriteAllText("Cache/Last Ping.json", json);
             }
             catch
             {
@@ -144,7 +148,7 @@ public partial class MainWindow : Form
     {
         Connection.Post(uri, message);
     }
-    private string FormString()
+    private string FormJSON()
     {
         DateTime dt = DateTime.UtcNow;
         string month = dt.Month.ToString();
@@ -163,22 +167,22 @@ public partial class MainWindow : Form
         string color = ((Border.BackColor.R * 65536) + (Border.BackColor.G * 256) + Border.BackColor.B).ToString();
         string json = JsonConvert.SerializeObject(new
         {
-            content = "@everyone",
+            content = Content,
             embeds = new[]
                 {
                     new
                     {
-                        title = $"{Header.Text}",
+                        title = $"{Title.Text}",
                         description = $"{Description.Text}\n\n**FC**: {FCName.SelectedItem}\n**Fleet Name**: {FleetNameBox.Text}\n**Formup Location**: {LocationBox.Text}\n**Formup Time**: <t:{unix}:F>\n**Doctrine**: {DoctrineBox.Text}",
                         color = $"{color}",
                         author = new
                         {
-                            name = $"{AuthorHeader.Text}",
+                            name = $"{Author.Text}",
                             icon_url = $"{LogoURL}"
                         },
                         footer = new
                         {
-                            text = $"{Footer.Text}",
+                            text = $"{FooterText.Text}",
                             icon_url = $"https://images.evetech.net/characters/{FCID}/portrait?size=128"
                         },
                         timestamp = $"{time}",
@@ -193,11 +197,10 @@ public partial class MainWindow : Form
     }
     private bool CheckJSON()
     {
-        if (WebhookURL.Text != "Enter Webhook URL Here" && Logo.Image != null && AuthorHeader.Text != "Enter Header Here"
-                && Thumbnail.Image != null && Header.Text != "Enter Header Here" && Description.Text != "Enter Description Here"
+        if (WebhookURL.Text != "Enter Webhook URL Here" && AuthorIcon.Image != null && Author.Text != "Enter Header Here"
+                && Thumbnail.Image != null && Title.Text != "Enter Header Here" && Description.Text != "Enter Description Here"
                 && FleetNameBox.Text != "Enter Fleet Name Here" && LocationBox.Text != "Enter Location Here" && DoctrineBox.Text != "Enter Doctrine Here")
         {
-            Clipboard.SetData(DataFormats.Text, FormString());
             return true;
         }
         else
@@ -220,7 +223,7 @@ public partial class MainWindow : Form
         ShipID = "";
         LogoURL = "";
         URLstr = "";
-        Logo.Image = null;
+        AuthorIcon.Image = null;
         Thumbnail.Image = null;
         FCIcon.Image = Image.FromFile("Cache/FC Photos/TBD.png");
         FCName.SelectedItem = "TBD";
@@ -229,7 +232,7 @@ public partial class MainWindow : Form
         {
             try
             {
-                ClearFiles("Cache/FC Photos", "Cache/Logo Photos");
+                ClearFiles("Cache/FC Photos", "Cache/Logos Photos");
                 break;
             }
             catch
@@ -237,13 +240,13 @@ public partial class MainWindow : Form
                 Thread.Sleep(500);
             }
         }
-        ClearCSVs("Cache/FC List.csv", "Cache/Logo List.csv", "Cache/Webhooks List.csv");
+        ClearCSVs("Cache/FC List.csv", "Cache/Logos List.csv", "Cache/Webhooks List.csv", "Cache/Last Ping.json");
         Description.Text = "Enter Description Here";
-        Header.Text = "Enter Header Here";
+        Title.Text = "Enter Header Here";
         DoctrineBox.Text = "Enter Doctrine Here";
         LocationBox.Text = "Enter Location Here";
         FleetNameBox.Text = "Enter Fleet Name Here";
-        AuthorHeader.Text = "Enter Header Here";
+        Author.Text = "Enter Header Here";
         foreach (var item in FCName.Items)
         {
             if (item.ToString() != "TBD")
@@ -273,26 +276,29 @@ public partial class MainWindow : Form
 
     private void SavePing_Click(object sender, EventArgs e)
     {
-        if (CheckJSON() && URL.SelectedItem != null)
+        if (CheckJSON())
         {
-
+            SaveJsonToFile.ShowDialog();
         }
     }
 
     private void LoadPing_Click(object sender, EventArgs e)
     {
-
+        LoadJsonFromFile.ShowDialog();
     }
 
     private void LoadLastPing_Click(object sender, EventArgs e)
     {
+        if (File.Exists("Cache/Last Ping.json"))
+            LoadJson("Cache/Last Ping.json");
+        else
+            MessageBox.Show("Cannot Find \"Cache/Last Ping.json\"", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
 
     }
-
     private void CopyJSON_Click(object sender, EventArgs e)
     {
         if (CheckJSON())
-            Clipboard.SetData(DataFormats.Text, FormString());
+            Clipboard.SetData(DataFormats.Text, FormJSON());
     }
     private void Quit_Click(object sender, EventArgs e)
     {
@@ -306,11 +312,87 @@ public partial class MainWindow : Form
 
     private void About_Click(object sender, EventArgs e)
     {
-        Process.Start("README.md");
+        new Info().ShowDialog();
     }
 
     private void URL_SelectedIndexChanged(object sender, EventArgs e)
     {
         URLstr = URLs[$"{URL.SelectedItem}"];
+    }
+
+    private void SaveJsonToFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        File.WriteAllText(SaveJsonToFile.FileName, FormJSON());
+    }
+
+    private void LoadJsonFromFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        LoadJson(LoadJsonFromFile.FileName);
+    }
+    async private void LoadJson(string path)
+    {
+        JsonProperties? json = JsonConvert.DeserializeObject<JsonProperties>(File.ReadAllText(path));
+        if (json != null)
+        {
+            if (!Logos.ContainsValue(json.Embeds[0].Author.IconURL))
+            {
+                await AddRemove.DownloadImageAsync(json.Embeds[0].Author.IconURL, AddRemove.SavePath.Logos, "Loaded " + json.Embeds[0].Author.Name, json.Embeds[0].Author.IconURL);
+                LogoSelection.LS.Logos.Images.Add("Loaded " + json.Embeds[0].Author.Name, Image.FromFile($"Cache/Logos Photos/{"Loaded " + json.Embeds[0].Author.Name}.png"));
+                LogoSelection.LS.Logos.Images.SetKeyName(LogoSelection.LS.Logos.Images.Count - 1, $"{"Loaded " + json.Embeds[0].Author.Name}.png");
+                LogoSelection.LS.LogosList.LargeImageList = LogoSelection.LS.Logos;
+                ListViewItem lvi = new();
+                lvi.Text = "Loaded " + json.Embeds[0].Author.Name;
+                lvi.ImageKey = "Loaded " + json.Embeds[0].Author.Name + ".png";
+                LogoSelection.LS.LogosList.Items.Add(lvi);
+                MainWindow.Logos.Add("Loaded " + json.Embeds[0].Author.Name, json.Embeds[0].Author.IconURL);
+            }
+            LogoURL = json.Embeds[0].Author.IconURL;
+            using (Image img = Image.FromFile($"Cache/Logos Photos/{Logos.Where(pair => pair.Value == json.Embeds[0].Author.IconURL).Select(pair => pair.Key).FirstOrDefault()}.png"))
+            {
+                AuthorIcon.Image = new Bitmap(img);
+                img.Dispose();
+            }
+            FleetInfo fi = FormDescription(json.Embeds[0].Description);
+            FCID = json.Embeds[0].Footer.IconURL.Split("/", StringSplitOptions.RemoveEmptyEntries)[3];
+            if (!FCS.ContainsKey(fi.FC))
+            {
+                await AddRemove.DownloadImageAsync(json.Embeds[0].Footer.IconURL, AddRemove.SavePath.FC, fi.FC, FCID);
+                MW.FCName.Items.Add(fi.FC);
+                FCS.Add(fi.FC, FCID);
+            }
+            FCName.SelectedItem = fi.FC.ToString();
+            Content = json.Content;
+            Title.Text = json.Embeds[0].Title;
+            Border.BackColor = Color.FromArgb(json.Embeds[0].Color);
+            ColorPicker.BackColor = Color.FromArgb(json.Embeds[0].Color);
+            Author.Text = json.Embeds[0].Author.Name;
+            if (fi != null)
+            {
+                Description.Text = fi.Description;
+                FleetNameBox.Text = fi.FleetName;
+                LocationBox.Text = fi.FormupLocation;
+                Date.Value = fi.FormupTime;
+                Time.Value = fi.FormupTime;
+                DoctrineBox.Text = fi.Doctrine;
+            }
+            FooterText.Text = json.Embeds[0].Footer.Text;
+            ShipID = json.Embeds[0].Thumbnail.URL.Replace("https://images.evetech.net/types/", "").Replace("/render?size=128", "");
+            Thumbnail.Image = Image.FromFile($"Cache/Ships Photos/{ShipID}.png");
+        }
+    }
+    private FleetInfo FormDescription(string description)
+    {
+        FleetInfo fi = new();
+        List<string> properties = new(description.Split(new string[] { "\n", ": " }, StringSplitOptions.RemoveEmptyEntries));
+        for (int i = properties.Count - 1; i >= 0; i--)
+            if (i % 2 != 0)
+                properties.RemoveAt(i);
+        fi.Description = properties[0];
+        fi.FC = properties[1];
+        fi.FleetName = properties[2];
+        fi.FormupLocation = properties[3];
+        fi.FormupTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Convert.ToInt64(properties[4].Split(":")[1]));
+        fi.Doctrine = properties[5];
+        return fi;
     }
 }

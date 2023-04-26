@@ -34,33 +34,20 @@ public partial class AddLogo : Form
             {
                 try
                 {
-                    using Stream stream = await MainWindow.Client.GetStreamAsync(LogoURLBox.Text);
-                    using FileStream fileStream = new($@"Cache\Logo Photos\{LogoNameBox.Text}.png", FileMode.CreateNew);
-                    Submit.Enabled = false;
-                    await stream.CopyToAsync(fileStream);
-                    fileStream.Close();
-                    stream.Close();
+                    await AddRemove.DownloadImageAsync(LogoURLBox.Text, AddRemove.SavePath.Logos, LogoNameBox.Text, LogoURLBox.Text);
+                    LogoSelection.LS.Logos.Images.Add(LogoNameBox.Text, Image.FromFile($"Cache/Logos Photos/{LogoNameBox.Text}.png"));
+                    LogoSelection.LS.Logos.Images.SetKeyName(LogoSelection.LS.Logos.Images.Count - 1, $"{LogoNameBox.Text}.png");
+                    LogoSelection.LS.LogosList.LargeImageList = LogoSelection.LS.Logos;
+                    ListViewItem lvi = new();
+                    lvi.Text = LogoNameBox.Text;
+                    lvi.ImageKey = LogoNameBox.Text + ".png";
+                    LogoSelection.LS.LogosList.Items.Add(lvi);
+                    MainWindow.Logos.Add(LogoNameBox.Text, LogoURLBox.Text);
                 }
                 catch (IOException)
                 {
                     MessageBox.Show("Logo already exists", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 }
-                string list = File.ReadAllText("Cache/Logo List.csv");
-                FileStream file = new("Cache/Logo List.csv", FileMode.Append);
-                StreamWriter writer = new(file);
-                if (list != "")
-                    writer.WriteLine();
-                writer.Write($"{LogoNameBox.Text},{LogoURLBox.Text}");
-                writer.Close();
-                file.Close();
-                LogoSelection.LS.Logos.Images.Add(LogoNameBox.Text, Image.FromFile($"Cache/Logo Photos/{LogoNameBox.Text}.png"));
-                LogoSelection.LS.Logos.Images.SetKeyName(LogoSelection.LS.Logos.Images.Count - 1, $"{LogoNameBox.Text}.png");
-                LogoSelection.LS.LogosList.LargeImageList = LogoSelection.LS.Logos;
-                ListViewItem lvi = new();
-                lvi.Text = LogoNameBox.Text;
-                lvi.ImageKey = LogoNameBox.Text + ".png";
-                LogoSelection.LS.LogosList.Items.Add(lvi);
-                MainWindow.Logos.Add(LogoNameBox.Text, LogoURLBox.Text);
                 Close();
             }
             else

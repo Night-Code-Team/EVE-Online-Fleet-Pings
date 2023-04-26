@@ -35,20 +35,8 @@ public partial class AddFCWindow : Form
             {
                 try
                 {
-                    using Stream stream = await MainWindow.Client.GetStreamAsync($"https://images.evetech.net/characters/{FCIDBox.Text}/portrait?size=32");
-                    using FileStream fileStream = new($@"Cache\FC Photos\{FCNameBox.Text}.png", FileMode.CreateNew);
-                    Submit.Enabled = false;
-                    await stream.CopyToAsync(fileStream);
-                    fileStream.Close();
-                    stream.Close();
-                    string list = File.ReadAllText("Cache/FC List.csv");
-                    FileStream file = new("Cache/FC List.csv", FileMode.Append);
-                    StreamWriter writer = new(file);
-                    if (list != "")
-                        writer.WriteLine();
-                    writer.Write($"{FCNameBox.Text},{FCIDBox.Text}");
-                    writer.Close();
-                    file.Close();
+                    string url = $"https://images.evetech.net/characters/{FCIDBox.Text}/portrait?size=32";
+                    await AddRemove.DownloadImageAsync(url, AddRemove.SavePath.FC, FCNameBox.Text, FCIDBox.Text);
                     MainWindow.MW.FCName.Items.Add(FCNameBox.Text);
                     MainWindow.FCS.Add(FCNameBox.Text, FCIDBox.Text);
                     Close();

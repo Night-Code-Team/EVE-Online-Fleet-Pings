@@ -14,7 +14,7 @@ public partial class ThumbnailSelection : Form
     {
         try
         {
-            MainWindow.MW.Thumbnail.Image = Image.FromFile($"Cache/Ship Photos/{MainWindow.Ships[ThumbnailsList.SelectedItems[0].Text]}.png");
+            MainWindow.MW.Thumbnail.Image = Image.FromFile($"Cache/Ships Photos/{MainWindow.Ships[ThumbnailsList.SelectedItems[0].Text]}.png");
             MainWindow.ShipID = MainWindow.Ships[ThumbnailsList.SelectedItems[0].Text];
         }
         catch { }
