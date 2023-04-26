@@ -10,6 +10,7 @@ DO NOT MODIFY "Cache" FOLDER, IF YOU ARE NOT SURE, WHAT YOU ARE DOING!
 General instructions:
 
 1) Create a webhook on the target server:
+
 ![Screenshot](Screenshots/Server%20Settings.png)
 ![Screenshot](Screenshots/Integrations.png)
 
@@ -30,9 +31,11 @@ You need to download any image using "add new logo" dialog window (all downloade
 
 And Choose Created profile in the list
 
-5) Set ping time (You should use your local time, not ET. It will be automatically converted to local time for all users by Discord)
+5) Choose border color
+![Screenshot](Screenshots/Border.png)
+6) Set ping time (You should use your local time, not ET. It will be automatically converted to local time for all users by Discord)
 
-6) Click "Send"
+7) Click "Send"
 
 Features:
 
@@ -43,5 +46,7 @@ Features:
 3) Bug reports and suggestions send to:
 
 Discord: \[FFSCS\] Communist Rev#6385
+
 Github: https://github.com/Communist-Rev
+
 EVE Online: Communist Rev
