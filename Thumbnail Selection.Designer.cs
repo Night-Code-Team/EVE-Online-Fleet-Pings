@@ -376,6 +376,26 @@ partial class ThumbnailSelection
             this.Thumbnails.Images.SetKeyName(330, "42245.png");
             this.Thumbnails.Images.SetKeyName(331, "42246.png");
             this.Thumbnails.Images.SetKeyName(332, "42685.png");
+            this.Thumbnails.Images.SetKeyName(333, "47269.png");
+            this.Thumbnails.Images.SetKeyName(334, "47270.png");
+            this.Thumbnails.Images.SetKeyName(335, "47271.png");
+            this.Thumbnails.Images.SetKeyName(336, "49710.png");
+            this.Thumbnails.Images.SetKeyName(337, "49711.png");
+            this.Thumbnails.Images.SetKeyName(338, "52250.png");
+            this.Thumbnails.Images.SetKeyName(339, "52252.png");
+            this.Thumbnails.Images.SetKeyName(340, "52254.png");
+            this.Thumbnails.Images.SetKeyName(341, "52907.png");
+            this.Thumbnails.Images.SetKeyName(342, "54731.png");
+            this.Thumbnails.Images.SetKeyName(343, "54732.png");
+            this.Thumbnails.Images.SetKeyName(344, "54733.png");
+            this.Thumbnails.Images.SetKeyName(345, "72811.png");
+            this.Thumbnails.Images.SetKeyName(346, "72812.png");
+            this.Thumbnails.Images.SetKeyName(347, "72869.png");
+            this.Thumbnails.Images.SetKeyName(348, "72872.png");
+            this.Thumbnails.Images.SetKeyName(349, "72903.png");
+            this.Thumbnails.Images.SetKeyName(350, "72904.png");
+            this.Thumbnails.Images.SetKeyName(351, "72907.png");
+            this.Thumbnails.Images.SetKeyName(352, "72913.png");
             // 
             // Cancel
             // 

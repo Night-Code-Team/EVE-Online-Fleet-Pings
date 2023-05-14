@@ -163,7 +163,19 @@ public partial class MainWindow : Form
         }
         string time = $"{dt.Year}-{month}-{day}T{dt.TimeOfDay}Z";
         DateTime ft = new(Date.Value.Year, Date.Value.Month, Date.Value.Day, Time.Value.Hour, Time.Value.Minute, Time.Value.Second);
-        long unix = ((DateTimeOffset)ft).ToUnixTimeSeconds();
+        string ET;
+        string formupTime;
+        if ((ft - DateTime.Now).TotalMinutes < 5)
+        {
+            ET = "NOW";
+            formupTime = "NOW";
+        }
+        else
+        {
+            DateTime formupTimeET = ft.AddHours(-3);
+            ET = $"{formupTimeET.Hour}:{formupTimeET.Minute}ET";
+            formupTime = $"<t:{((DateTimeOffset)ft).ToUnixTimeSeconds()}:F>";
+        }
         string color = ((Border.BackColor.R * 65536) + (Border.BackColor.G * 256) + Border.BackColor.B).ToString();
         string json = JsonConvert.SerializeObject(new
         {
@@ -173,7 +185,7 @@ public partial class MainWindow : Form
                     new
                     {
                         title = $"{Title.Text}",
-                        description = $"{Description.Text}\n\n**FC**: {FCName.SelectedItem}\n**Fleet Name**: {FleetNameBox.Text}\n**Formup Location**: {LocationBox.Text}\n**Formup Time**: <t:{unix}:F>\n**Doctrine**: {DoctrineBox.Text}",
+                        description = $"{Description.Text}\n\n**FC**: {FCName.SelectedItem}\n**Fleet Name**: {FleetNameBox.Text}\n**Formup Location**: {LocationBox.Text}\n**Formup Time ET**: {ET}\n**Formup Time Local**: {formupTime}\n**Doctrine**: {DoctrineBox.Text}",
                         color = $"{color}",
                         author = new
                         {
@@ -201,11 +213,18 @@ public partial class MainWindow : Form
                 && Thumbnail.Image != null && Title.Text != "Enter Header Here" && Description.Text != "Enter Description Here"
                 && FleetNameBox.Text != "Enter Fleet Name Here" && LocationBox.Text != "Enter Location Here" && DoctrineBox.Text != "Enter Doctrine Here")
         {
-            return true;
+            DateTime ft = new(Date.Value.Year, Date.Value.Month, Date.Value.Day, Time.Value.Hour, Time.Value.Minute, Time.Value.Second);
+            if ((ft - DateTime.Now).TotalMinutes > 0)
+                return true;
+            else
+            {
+                MessageBox.Show("Formup time must be greater than the current time", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return false;
+            }
         }
         else
         {
-            MessageBox.Show("Fill in all the fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            MessageBox.Show("Fill in all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             return false;
         }
     }
